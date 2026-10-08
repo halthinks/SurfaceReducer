@@ -16,8 +16,21 @@ The MVP provides:
 - probe records for repeated agent inference;
 - hook-opportunity detection based on repeatability and accumulated cost;
 - an agent-agnostic harness that creates constrained hook tasks without write authority;
+- a connector-authoring contract that tells an agent how to integrate any project-local surface safely;
 - a zero-runtime-dependency CLI;
 - tests for the core safety properties.
+
+## Connector-agnostic by design
+
+SurfaceReducer does **not** ship GitHub, CI, systemd, database, queue, webhook, cloud, or vendor-specific connectors.
+
+Instead, it defines the semantic contract every connector must satisfy. When SurfaceReducer detects a useful hook opportunity, the harness gives an agent the rules needed to implement the smallest project-local connector at the authoritative owner.
+
+A connector may use any transport the project requires: callback, hook, outbox, queue, socket, API, file event, process notification, or something proprietary. SurfaceReducer only cares that the connector emits valid evidence-bound lifecycle events after authoritative state is durable.
+
+This keeps SurfaceReducer portable and prevents integration code from turning the reducer into a second source of truth.
+
+See [docs/connector_contract.md](docs/connector_contract.md).
 
 ## Why
 
@@ -42,6 +55,8 @@ surface-reducer detect-hooks examples/hardwareclosure_probes.jsonl
 5. Late old-source events cannot replace newer current state.
 6. Missing events never imply success.
 7. Hook discovery proposes instrumentation; it does not grant mutation authority.
-8. Project integrations are adapters, not forks of the reducer core.
+8. Concrete connectors are project-local; SurfaceReducer ships the connector contract, not integrations.
+9. Connector transport is irrelevant to reducer semantics.
+10. An agent implementing a connector must preserve the authoritative owner's existing write path and acceptance rules.
 
 The initial architecture is distilled from the HardwareClosure reducer/lifecycle work but SurfaceReducer has no HardwareClosure dependency.

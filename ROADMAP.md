@@ -8,30 +8,33 @@
 - Probe records for repeated agent inference.
 - Hook-opportunity detector.
 - Non-authoritative agent harness.
+- Connector-authoring contract.
 - CLI and core tests.
 
-Exit: a project can feed events and probes, obtain current projected state, and receive a constrained hook proposal.
+Exit: a project can feed events and probes, obtain current projected state, and receive a constrained connector/hook task for a project-local implementation.
 
-## M1 — Durable local store
+## M1 — Durable event/replay contract
 
-- Atomic JSONL/SQLite event store.
-- Projection checkpoints and replay.
+- Atomic local event journal reference implementation.
+- Projection checkpoints and replay semantics.
 - Crash-safe idempotency markers.
 - Explicit UNKNOWN, STALE, FAILED, CANCELLED states.
 - Source/currentness indexes.
 
-Exit: process death cannot lose accepted events or corrupt projection state.
+Exit: implementations have a precise persistence/replay contract without requiring a specific database or storage product.
 
-## M2 — Adapter SDK
+## M2 — Connector authoring kit
 
-- Producer adapter protocol.
-- Git/GitHub adapter.
-- CI/job adapter.
-- systemd/process adapter.
-- database/outbox adapter.
-- webhook adapter.
+- Stable connector contract.
+- Connector template.
+- Agent instructions for locating the authoritative producer.
+- Evidence/currentness/idempotency checklist.
+- Acceptance-test template.
+- Transport-neutral delivery requirements.
 
-Exit: external systems can emit the same event contract without core-specific code.
+Non-goal: SurfaceReducer will not bundle GitHub, CI, systemd, database, queue, webhook, cloud, or vendor-specific connectors.
+
+Exit: an agent can create a project-local connector for any surface without changing SurfaceReducer core.
 
 ## M3 — Project discovery
 
@@ -39,26 +42,27 @@ Exit: external systems can emit the same event contract without core-specific co
 - Discover recurring polls, log reads, status fetches, and manual joins.
 - Map each inference to an authoritative owner candidate.
 - Score repeatability, cost, confidence, and blast radius.
+- Emit connector-ready opportunities against the stable contract.
 
 Exit: detector can generate ranked hook opportunities from real agent telemetry.
 
 ## M4 — Governed agent harness
 
 - Pluggable agent interface.
-- Hook proposal schema.
+- Connector/hook proposal schema.
 - Static safety checks.
 - Required acceptance tests generated per opportunity.
-- Human/reviewer approval boundary.
+- Human/reviewer approval boundary when the host project requires one.
 - No direct authority expansion.
 
-Exit: an agent can propose an implementation-ready hook patch without being able to silently redefine truth.
+Exit: an agent can produce an implementation-ready project-local connector patch without being able to silently redefine truth.
 
 ## M5 — Self-improving observability loop
 
 - Observe reducer escapes.
 - Cluster repeated inference gaps.
-- Propose hook.
-- Validate hook against owner evidence.
+- Propose a project-local connector/hook.
+- Validate emitted events against owner evidence.
 - Measure reduced polling/inference after adoption.
 - Retire low-value/noisy hooks.
 
@@ -72,4 +76,4 @@ Exit: projects measurably reduce repeated state-reconstruction work over time.
 - Event federation without central mutation authority.
 - Mission-control API and UI.
 
-Exit: long-running agent fleets share one evidence-bound project-state substrate while preserving owner authority.
+Exit: long-running agent fleets share one evidence-bound project-state substrate while every integration remains owned by its project.
