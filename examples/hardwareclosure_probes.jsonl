@@ -1,0 +1,3 @@
+{"surface":"ci","question":"Is qualification still running?","method":"poll canonical fleet job","authority":"source-convergence/canonical-ci-owner","cost":2,"repeatable":true,"observed_at":1.0,"context":{"project":"HardwareClosure"}}
+{"surface":"ci","question":"Is qualification still running?","method":"poll canonical fleet job","authority":"source-convergence/canonical-ci-owner","cost":2,"repeatable":true,"observed_at":2.0,"context":{"project":"HardwareClosure"}}
+{"surface":"ci","question":"Is qualification still running?","method":"poll canonical fleet job","authority":"source-convergence/canonical-ci-owner","cost":2,"repeatable":true,"observed_at":3.0,"context":{"project":"HardwareClosure"}}
