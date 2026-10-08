@@ -10,6 +10,9 @@ Contributions should preserve these invariants:
 - duplicate delivery is idempotent;
 - old observations do not overwrite newer current state;
 - unknown/missing state is explicit rather than inferred as success;
-- agent harnesses may propose hooks but do not silently gain execution authority.
+- agent harnesses may propose hooks but do not silently gain execution authority;
+- SurfaceReducer core does not acquire concrete project/vendor integrations;
+- concrete connectors live with the project or environment whose authoritative producer they observe;
+- connector transport is implementation detail and must not leak into reducer semantics.
 
-Please include tests for currentness, duplicate delivery, failure paths, and replay whenever adding a new reducer or adapter behavior.
+When changing the connector contract, include tests for event validity, currentness, duplicate delivery, failure paths, and preservation of owner authority.
