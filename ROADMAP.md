@@ -23,6 +23,8 @@ Exit: a project can feed events and probes, obtain current projected state, and 
 
 Exit: implementations have a precise persistence/replay contract without requiring a specific database or storage product.
 
+M1 implementation status (2026-10-08): atomic SQLite journal, duplicate-safe insertion, checkpoint/replay, explicit unknown/stale/failure views, owner-generation currentness and indexed source history. Executable acceptance and limitations: [docs/M1_VERIFICATION.md](docs/M1_VERIFICATION.md). Source contract: [docs/M1_DURABLE_JOURNAL.md](docs/M1_DURABLE_JOURNAL.md).
+
 ## M2 — Connector authoring kit
 
 - Stable connector contract.
