@@ -46,6 +46,18 @@ pytest -q
 surface-reducer detect-hooks examples/hardwareclosure_probes.jsonl
 ```
 
+## M1 — durable replay
+
+The optional, dependency-free SQLite reference journal persists authoritative observations and a recoverable projection checkpoint. Semantic event IDs are transactional uniqueness markers; checkpoint state is checksum-verified and replayable. Source-currentness generations protect against stale source replacement, while UNKNOWN/STALE/FAILED/CANCELLED remain explicit and read-only.
+
+See [M1 durable journal contract](docs/M1_DURABLE_JOURNAL.md) and [executable verification](docs/M1_VERIFICATION.md).
+
+~~~sh
+surface-reducer journal-append ./surfaces.sqlite ./events.jsonl
+surface-reducer journal-state ./surfaces.sqlite --surface ci --stale-after 300
+surface-reducer journal-replay ./surfaces.sqlite
+~~~
+
 ## Design rules
 
 1. Reducer is read-only.
